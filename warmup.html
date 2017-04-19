@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vue.js warmup.html</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script type="text/javascript">
+      var __data=[{"id":1,"name":"공조","year":2017,"director":"김성훈","rating":3},{"id":2,"name":"컨택트","year":2017,"director":"드니 빌뇌브","rating":5,},{"id":3,"name":"더킹","year":2017,"director":"한재림","rating":4.5},{"id":4,"name":"모아나","year":2017,"director":"론 클레멘츠, 존 머스커","rating":4},{"id":5,"name":"라이언","year":2017,"director":"가스 데이비스","rating":3,},{"id":6,"name":"너의 이름은","year":2017,"director":"신카이 마코토","rating":4.5}];
+      var __commonContent="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
+
+      window.onload = () => {
+
+        // Defind 'navbar' instance
+        var navbar = new Vue({
+          el: '#navbar',
+          data: {
+            brandName: 'Brand',
+            inputMessage: 'Hello world!',
+            count: 0,
+            show: true
+          },
+          methods: {
+            plusCount() {
+              this.count += 1;
+            },
+            toggleShow() {
+              this.show = !this.show;
+            }
+          },
+          created() {
+            this.brandName = 'Vue.js';
+          }
+        });
+
+        // Defind 'header' instance
+        var header = new Vue({
+          el: '#header',
+          data: {
+            message: 'Hello Vue.js!'
+          }
+        });
+
+        // Defind 'form' instance
+        var form = new Vue({
+          el: '#form',
+          data: {
+            checkedFruits: []
+          }
+        });
+
+        // Defind 'listGroup' instance
+        var listGroup = new Vue({
+          el: '#listGroup',
+          created() {
+            this.data = __data;
+            this.commonContent = __commonContent;
+          }
+        });
+
+      };
+    </script>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default" id="navbar">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">{{brandName}}</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="#" @click="plusCount">PlusCount</a></li>
+            <li><a href="#" @click="toggleShow">ToggleShow</a></li>
+            <li><p class="navbar-text">Clicked: {{ count }}</p></li>
+            <li><p class="navbar-text">{{ inputMessage }}</p></li>
+          </ul>
+          <form class="navbar-form navbar-right" v-if="show">
+            <div class="form-group">
+              <input type="text" class="form-control" v-model="inputMessage">
+            </div>
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container">
+
+      <div class="jumbotron" id="header">
+        <h1>{{ message }}</h1>
+        <p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
+        <p>"There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain..."<p>
+      </div>
+
+      <form class="form-horizontal" id="form">
+        <div class="checkbox">
+          <div class="form-group">
+            <label><input type="checkbox" value="Apple" v-model="checkedFruits"> Apple</label>
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" value="Banana" v-model="checkedFruits"> Banana</label>
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" value="Cherry" v-model="checkedFruits"> Cherry</label>
+          </div>
+          <button class="btn btn-default" @click="checkedFruits = []">Reset</button>
+        </div>
+        <p>Checked fruits: {{ checkedFruits }} ({{ checkedFruits.length }})</p>
+      </form>
+      
+      <div id="listGroup">
+        <ul class="list-group">
+          <li class="list-group-item" v-for="d in data">
+            <h4>
+              <strong>{{ d.name }}</strong> [{{ d.year }}]
+              <small v-for="_ in parseInt(d.rating)"><span class="glyphicon glyphicon-star"></span></small>
+              <!-- <small class="pull-right">Viewed: {{ d.viewed === undefined ? 0 : d.viewed }}</small> -->
+            </h4>
+            <small style="color: green;" v-if="d.rating >= 4">Recommended!</small>
+            <p>{{ commonContent }}</p>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+  </body>
+</html>
