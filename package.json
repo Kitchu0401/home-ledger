@@ -1,0 +1,10 @@
+{
+  "name": "vuejs-warmup",
+  "version": "1.0.0",
+  "author": "Kitchu0401",
+  "description": "Vue.js project for warming-up. : )",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC"
+}
