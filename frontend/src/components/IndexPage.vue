@@ -3,10 +3,9 @@
         <h1>영화 목록</h1>
         <div class="movie" v-for="movie in movies">
             <img class="poster" v-bind:src="movie.poster">
-            <div>
-                <strong>{{ movie.name }}</strong>, <i>{{ movie.director }}</i> [{{ movie.year }}]
-                <router-link v-bind:to="{ name: 'showPage', params: { id: movie.id } }">더보기</router-link>
-            </div>
+            <p><strong>{{ movie.name }}</strong> [{{ movie.year }}]</p>
+            <p><i>{{ movie.director }}</i></p>
+            <router-link v-bind:to="{ name: 'showPage', params: { id: movie.id } }">더보기</router-link>
         </div>
     </div>
 </template>
@@ -26,3 +25,13 @@ export default {
     },
 };
 </script>
+
+<style>
+.movie {
+    float: left;
+}
+.movie img {
+    width: 160px;
+    height: 240px;
+}
+</style>
