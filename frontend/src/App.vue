@@ -2,12 +2,18 @@
   <div id="app">
     <img src="./assets/logo.png">
     <router-view></router-view>
+    <Parent />
   </div>
 </template>
 
 <script>
+import Parent from './components/Parent.vue';
+
 export default {
   name: 'app',
+  components: {
+    Parent
+  }
 };
 </script>
 
