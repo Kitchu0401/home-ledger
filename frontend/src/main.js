@@ -4,6 +4,11 @@ import Vue from 'vue';
 import Axios from 'axios';
 import router from './router';
 import App from './App';
+// Adding jQuery
+import 'expose-loader?$!expose-loader?jQuery!jquery';
+// Adding Bootstrap
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = Axios;
