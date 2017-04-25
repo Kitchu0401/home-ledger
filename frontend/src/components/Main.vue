@@ -12,27 +12,29 @@
           </ul>
         </p>
       </div>
-      <RecordList />
+      <ReceiptList v-bind:receiptList="receiptList" />
     </div>
   </div>
 </template>
 
 <script>
 import Navbar from './Navbar.vue';
-import RecordList from './RecordList.vue';
+import ReceiptList from './ReceiptList.vue';
 
 export default {
   created () {
-
+    this.$http.get('/api/receipt')
+      .then((result) => { this.receiptList = result.data; })
+      .catch((error) => { console.error(error); });
   },
   data () {
     return {
-
+      receiptList: []
     };
   },
   components: {
     Navbar,
-    RecordList
+    ReceiptList
   }
 };
 </script>
