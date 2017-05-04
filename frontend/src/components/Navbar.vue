@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">죽전생존</a>
+            <router-link v-bind:to="{ name: 'main' }" class="navbar-brand">죽전생존</router-link>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -47,8 +47,8 @@
                 </li>
                 -->
                 
-                <li v-if="type === 'main'"><router-link v-bind:to="{ name: 'detail' }">To Detail</router-link></li>
-                <li v-if="type === 'detail'"><router-link v-bind:to="{ name: 'main' }">To Main</router-link></li>
+                <li v-if="$route.name === 'main'"><router-link v-bind:to="{ name: 'detail' }">새로 작성하기</router-link></li>
+                <!--<li v-if="type === 'detail'"><router-link v-bind:to="{ name: 'main' }">To Main</router-link></li>-->
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -57,14 +57,13 @@
 
 <script>
 export default {
-    created () {
+  created () {
 
-    },
-    data () {
-        return {
+  },
+  data () {
+    return {
 
-        };
-    },
-    props: ['type']
-};
+    }
+  }
+}
 </script>

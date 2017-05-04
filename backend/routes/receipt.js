@@ -5,22 +5,41 @@ var router = express.Router();
 
 // GET receipt list
 router.get('/', function(req, res, next) {
-    var modifiedResult = receipts.reduce((prev, curr) => {
-        if ( !prev[curr.date] ) {
-            prev[curr.date] = {
-                date: curr.date,
-                totalAmount: curr.type === '0' ? curr.amount : curr.amount * -1,
-                receipts: [curr]
+    try {
+        var modifiedResult = receipts.reduce((prev, curr) => {
+            if ( !prev[curr.date] ) {
+                prev[curr.date] = {
+                    date: curr.date,
+                    totalAmount: curr.type === '0' ? curr.amount : curr.amount * -1,
+                    receipts: [curr]
+                }
+            } else {
+                prev[curr.date].totalAmount = curr.type === '0' ? prev[curr.date].totalAmount + curr.amount : prev[curr.date].totalAmount - curr.amount;
+                prev[curr.date].receipts.push(curr);
             }
-        } else {
-            prev[curr.date].totalAmount = curr.type === '0' ? prev[curr.date].totalAmount + curr.amount : prev[curr.date].totalAmount - curr.amount;
-            prev[curr.date].receipts.push(curr);
-        }
 
-        return prev;
-    }, {});
+            return prev;
+        }, {});
 
-    res.send(modifiedResult);
+        res.send(modifiedResult);
+    } catch(err) {
+        console.error(err);
+        res.send(err);
+    }
+});
+
+// GET receipt
+router.get('/:id', function(req, res, next) {
+    try {
+        var result = receipts.find((receipt) => {
+            return Number(req.params.id) === receipt.id;
+        });
+
+        res.send(result);
+    } catch(err) {
+        console.error(err);
+        res.send(err);
+    }
 });
 
 // GET movie

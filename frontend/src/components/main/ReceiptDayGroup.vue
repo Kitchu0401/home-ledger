@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Receipt from './Receipt.vue';
+import Receipt from './Receipt.vue'
 
 export default {
   name: 'ReceiptDayGroup',
@@ -21,12 +21,12 @@ export default {
   },
   props: ['receiptGroup'],
   created () {
-    console.debug(this.receiptGroup)
+
   },
   data () {
     return {
 
-    };
+    }
   }
-};
+}
 </script>

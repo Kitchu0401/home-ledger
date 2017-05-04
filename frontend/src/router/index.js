@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Main from '../components/Main.vue';
-import Detail from '../components/Detail.vue';
+import Main from '../components/main/Main.vue';
+import Detail from '../components/detail/Detail.vue';
 
 Vue.use(Router);
 
@@ -16,7 +16,8 @@ export default new Router({
     {
       path: '/detail',
       name: 'detail',
-      component: Detail
+      component: Detail,
+      props: true
     }
   ]
 });

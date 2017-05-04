@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ReceiptDayGroup from './ReceiptDayGroup.vue';
+import ReceiptDayGroup from './ReceiptDayGroup.vue'
 
 export default {
   name: 'ReceiptList',
@@ -21,8 +21,8 @@ export default {
   },
   data () {
     return {
-      
-    };
+
+    }
   }
-};
+}
 </script>
