@@ -32,7 +32,7 @@
                 </li>
             </ul>
             -->
-            <ul class="nav navbar-nav navbar-right">
+            <ul v-if="$route.name === 'main'" class="nav navbar-nav navbar-right">
                 <!--
                 <li><a href="#">Link</a></li>
                 <li class="dropdown">
@@ -47,7 +47,7 @@
                 </li>
                 -->
                 
-                <li v-if="$route.name === 'main'"><router-link v-bind:to="{ name: 'detail' }">새로 작성하기</router-link></li>
+                <li><router-link v-bind:to="{ name: 'detail' }">새로 작성하기</router-link></li>
                 <!--<li v-if="type === 'detail'"><router-link v-bind:to="{ name: 'main' }">To Main</router-link></li>-->
             </ul>
         </div><!-- /.navbar-collapse -->

@@ -26,7 +26,22 @@
       <div class="form-group">
         <label class="col-sm-2 control-label" for="sub-type">분류</label>
         <div class="col-sm-10">
-          <input class="btn btn-default" type="button" v-bind:value="receipt.subType">
+          <SubTypeModal
+            v-bind:type="receipt.type"
+            v-bind:sub-type="receipt.subType"
+            v-on:selectSubType="selectSubType">
+          </SubTypeModal>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="amount">날짜</label>
+        <div class="col-sm-10">
+          <Datepicker 
+            input-class="form-control"
+            format="yyyy-MM-dd"
+            language="ko"
+            v-model="receipt.date">
+          </Datepicker>
         </div>
       </div>
       <div class="form-group">
@@ -43,18 +58,35 @@
       </div>
     </form>
 
-    <button class="btn btn-primary form-control" v-on:click="printValues">PrintValues</button>
+    <button class="btn btn-primary form-control" v-on:click="saveReceipt">Save receipt</button>
   </div>
 </template>
 
 <script>
+import Datepicker from 'vuejs-datepicker'
+import SubTypeModal from './SubTypeModal.vue'
+
 export default {
   name: 'detail',
   props: ['id'],
+  components: {
+    Datepicker,
+    SubTypeModal
+  },
   created () {
     if ( this.id ) {
       this.$http.get(`/api/receipt/${this.id}`)
-        .then((result) => { this.receipt = result.data })
+        .then((result) => {
+          this.receipt = result.data
+          // FIXME: temporal conversioning code
+          if ( typeof this.receipt.date === 'string' ) {
+            this.receipt.date = new Date(
+              Number(this.receipt.date.substring(0, 4)),
+              Number(this.receipt.date.substring(4, 6)) - 1,
+              Number(this.receipt.date.substring(6, 8))
+            )
+          }
+        })
         .catch((error) => { console.error(error) })
     }
   },
@@ -64,6 +96,7 @@ export default {
         id: undefined,
         type: '0',
         subType: '분류선택',
+        date: new Date(),
         amount: 0,
         memo: ''
       },
@@ -72,7 +105,11 @@ export default {
   },
   computed: {},
   methods: {
-    printValues () {
+    selectSubType (subType) {
+      console.debug('subType selected!', subType)
+      this.receipt.subType = subType
+    },
+    saveReceipt () {
       console.debug(this.receipt)
     }
   }

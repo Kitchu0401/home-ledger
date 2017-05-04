@@ -15,21 +15,21 @@
 </template>
 
 <script>
-import ReceiptList from './ReceiptList.vue';
+import ReceiptList from './ReceiptList.vue'
 
 export default {
   created () {
     this.$http.get('/api/receipt')
-      .then((result) => { this.receiptList = result.data; })
-      .catch((error) => { console.error(error); });
+      .then((result) => { this.receiptList = result.data })
+      .catch((error) => { console.error(error) })
   },
   data () {
     return {
       receiptList: []
-    };
+    }
   },
   components: {
     ReceiptList
   }
-};
+}
 </script>

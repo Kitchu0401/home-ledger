@@ -20,7 +20,8 @@
     "jquery": "^3.2.1",
     "vue": "^2.2.6",
     "vue-router": "^2.3.1",
-    "vue-strap": "^1.1.37"
+    "vue-strap": "^1.1.37",
+    "vuejs-datepicker": "^0.7.11"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
