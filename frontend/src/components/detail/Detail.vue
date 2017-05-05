@@ -13,8 +13,8 @@
     </div>
     <form class="form-horizontal">
       <div class="form-group">
-        <label class="col-sm-2 control-label">구분</label>
-        <div class="col-sm-10">
+        <label class="col-sm-1 control-label">구분</label>
+        <div class="col-sm-11">
           <label class="radio-inline" for="type_0">
             <input type="radio" id="type_0" value="0" v-model="receipt.type" /> 소득
           </label>
@@ -24,8 +24,8 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label" for="sub-type">분류</label>
-        <div class="col-sm-10">
+        <label class="col-sm-1 control-label" for="sub-type">분류</label>
+        <div class="col-sm-11">
           <SubTypeModal
             v-bind:type="receipt.type"
             v-bind:sub-type="receipt.subType"
@@ -34,8 +34,8 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label" for="amount">날짜</label>
-        <div class="col-sm-10">
+        <label class="col-sm-1 control-label" for="amount">날짜</label>
+        <div class="col-sm-11">
           <Datepicker 
             input-class="form-control"
             format="yyyy-MM-dd"
@@ -45,18 +45,22 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label" for="amount">금액</label>
-        <div class="col-sm-10">
-          <input type="number" class="form-control" id="amount" name="amount" v-model="receipt.amount">
+        <label class="col-sm-1 control-label" for="amount">금액</label>
+        <div class="col-sm-11">
+          <input type="number" class="form-control" id="amount" name="amount" v-model.number="receipt.amount">
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label" for="memo">메모</label>
-        <div class="col-sm-10">
+        <label class="col-sm-1 control-label" for="memo">메모</label>
+        <div class="col-sm-11">
           <input type="text" class="form-control" id="memo" name="memo" v-model="receipt.memo">
         </div>
       </div>
     </form>
+
+    <div v-show="errorMsg" class="alert alert-warning" role="alert">
+      <strong><i class="fa fa-exclamation" aria-hidden="true"></i></strong> {{ errorMsg }}
+    </div>
 
     <button class="btn btn-primary form-control" v-on:click="saveReceipt">Save receipt</button>
   </div>
@@ -106,11 +110,35 @@ export default {
   computed: {},
   methods: {
     selectSubType (subType) {
-      console.debug('subType selected!', subType)
       this.receipt.subType = subType
     },
     saveReceipt () {
       console.debug(this.receipt)
+
+      // validate
+      if ( this._validate() ) {
+        // save
+        this.$http.post('/api/receipt', this.receipt)
+          .then((result) => { console.debug(result.data) })
+          .catch((err) => {
+            console.error(err)
+            this.errorMsg = '서버와 통신 중 오류가 발생했습니다.'
+          })
+      }
+    },
+    _validate () {
+      console.debug(typeof this.receipt.amount, this.receipt.amount)
+      if ( this.receipt.subType === '분류선택' ) {
+        this.errorMsg = '분류를 선택해주세요.'
+        return false
+      }
+      else if ( !$.isNumeric(this.receipt.amount) || this.receipt.amount <= 0 ) {
+        this.errorMsg = '올바른 금액을 입력해주세요.'
+        return false
+      }
+      
+      this.errorMsg = ''
+      return true
     }
   }
 }
