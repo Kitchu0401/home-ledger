@@ -1,58 +1,64 @@
 var express = require('express')
-var receipts = require('./receipt.json')
+var mongoose = require('mongoose')
+var Receipt = require('./../models/receipt.js')
 
 var router = express.Router()
 
 // POST save receipt
 router.post('/', function(req, res, next) {
-    res.send(req.body)
+  let id = req.body._id || new mongoose.mongo.ObjectId()
+  let receipt = req.body
+  let options = { new: true, upsert: true }
+  Receipt.findByIdAndUpdate(id, receipt, options)
+  .then(function(a,b,c) {
+    res.send(a)
+  })
+  .catch(function(err) {
+    console.error(err)
+    res.send(err)
+  })
 })
 
 // GET receipt list
 router.get('/', function(req, res, next) {
-    try {
-        var modifiedResult = receipts.reduce((prev, curr) => {
-            if ( !prev[curr.date] ) {
-                prev[curr.date] = {
-                    date: curr.date,
-                    totalAmount: curr.type === '0' ? curr.amount : curr.amount * -1,
-                    receipts: [curr]
-                }
-            } else {
-                prev[curr.date].totalAmount = curr.type === '0' ? prev[curr.date].totalAmount + curr.amount : prev[curr.date].totalAmount - curr.amount
-                prev[curr.date].receipts.push(curr)
-            }
-
-            return prev
-        }, {})
-
-        res.send(modifiedResult)
-    } catch(err) {
-        console.error(err)
-        res.send(err)
+  Receipt
+  .aggregate(
+    {
+      $group: { 
+        _id: "$date",
+        date: { $first: "$date" },
+        sumAmount: { $sum: "$amount" },
+        receipts: { $addToSet: "$$CURRENT" }
+      }
+    },
+    {
+      $sort: { 
+        date: -1
+      }
     }
+  )
+  .exec()
+  .then(function(data) {
+    res.send(data)
+  })
+  .catch(function(err) {
+    console.error(err)
+    res.send(err)
+  })
 })
 
 // GET receipt
 router.get('/:id', function(req, res, next) {
-    try {
-        var result = receipts.find((receipt) => {
-            return Number(req.params.id) === receipt.id
-        })
-
-        res.send(result)
-    } catch(err) {
-        console.error(err)
-        res.send(err)
-    }
+  Receipt
+  .findOne(new mongoose.Types.ObjectId(req.params.id))
+  .exec()
+  .then(function(data) {
+    res.send(data)
+  })
+  .catch(function(err) {
+    console.error(err)
+    res.send(err)
+  })
 })
-
-// GET movie
-// router.get('/:id', function(req, res, next) {
-//     var id = parseInt(req.params.id, 10)
-//     res.send(movies.find((movie) => {
-//         return movie.id === id
-//     }))
-// })
 
 module.exports = router

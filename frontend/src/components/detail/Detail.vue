@@ -5,8 +5,8 @@
       <p>
         <h3>Todo:</h3>
         <ul>
-          <li>신규 영수증 내역 추가 기능</li>
-          <li>기 등록된 영수증 내역 수정 및 삭제 기능</li>
+          <li><i class="fa fa-check" aria-hidden="true"></i> 신규 영수증 내역 추가 기능</li>
+          <li><i class="fa fa-check" aria-hidden="true"></i> 기 등록된 영수증 내역 수정 및 삭제 기능</li>
           <li>복사된 영수증 내역 붙여넣기</li>
         </ul>
       </p>
@@ -81,15 +81,9 @@ export default {
     if ( this.id ) {
       this.$http.get(`/api/receipt/${this.id}`)
         .then((result) => {
+          result.data.date = new Date(result.data.date)
+          result.data.amount = Math.abs(result.data.amount)
           this.receipt = result.data
-          // FIXME: temporal conversioning code
-          if ( typeof this.receipt.date === 'string' ) {
-            this.receipt.date = new Date(
-              Number(this.receipt.date.substring(0, 4)),
-              Number(this.receipt.date.substring(4, 6)) - 1,
-              Number(this.receipt.date.substring(6, 8))
-            )
-          }
         })
         .catch((error) => { console.error(error) })
     }
@@ -97,7 +91,7 @@ export default {
   data () {
     return {
       receipt: {
-        id: undefined,
+        _id: undefined,
         type: '0',
         subType: '분류선택',
         date: new Date(),
@@ -107,19 +101,22 @@ export default {
       errorMsg: ''
     }
   },
-  computed: {},
   methods: {
     selectSubType (subType) {
       this.receipt.subType = subType
     },
     saveReceipt () {
-      console.debug(this.receipt)
-
       // validate
       if ( this._validate() ) {
+        // pre-process
+        this.receipt.amount *= (this.receipt.type === '0' ? 1 : -1)
+
         // save
         this.$http.post('/api/receipt', this.receipt)
-          .then((result) => { console.debug(result.data) })
+          .then((result) => {
+            // forward to main list page
+            this.$router.push({ name: 'main' })
+          })
           .catch((err) => {
             console.error(err)
             this.errorMsg = '서버와 통신 중 오류가 발생했습니다.'
@@ -127,7 +124,6 @@ export default {
       }
     },
     _validate () {
-      console.debug(typeof this.receipt.amount, this.receipt.amount)
       if ( this.receipt.subType === '분류선택' ) {
         this.errorMsg = '분류를 선택해주세요.'
         return false
