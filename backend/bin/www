@@ -7,12 +7,22 @@
 var app = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
+var fs = require('fs');
 
 /**
  * Get port from environment and store in Express.
  */
 
+// Port initialization
+// var port = normalizePort(process.env.PORT || '3000');
 var port = normalizePort(process.env.PORT || '3000');
+try {
+    const configFilePath = '../../config.json';
+    port = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'))['wonderequips_v2'] || port;
+} catch(err) {
+    console.error(err, 'Using default port: ' + port);
+}
+
 app.set('port', port);
 
 /**
