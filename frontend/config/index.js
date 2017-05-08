@@ -28,6 +28,7 @@ module.exports = {
     env: require('./dev.env'),
     port: 4000,
     autoOpenBrowser: true,
+    publicPath: '/HomeLedger/',
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {

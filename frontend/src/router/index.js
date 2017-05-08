@@ -9,12 +9,12 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/HomeLedger/',
       name: 'main',
       component: Main
     },
     {
-      path: '/detail',
+      path: '/HomeLedger/detail',
       name: 'detail',
       component: Detail,
       props: true
