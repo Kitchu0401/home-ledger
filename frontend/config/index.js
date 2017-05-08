@@ -9,7 +9,7 @@ module.exports = {
     // index: path.resolve(__dirname, '../dist/index.html'),
     // assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    // MODIFED: appended for application name
+    // MODIFED: append for application name
     assetsPublicPath: '/HomeLedger/',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
@@ -28,6 +28,7 @@ module.exports = {
     env: require('./dev.env'),
     port: 4000,
     autoOpenBrowser: true,
+    // MODIFED: append to sync with prod environment
     publicPath: '/HomeLedger/',
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
