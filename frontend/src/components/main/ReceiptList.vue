@@ -1,9 +1,12 @@
 <template>
-  <div>
-    <ReceiptDayGroup
-      v-for="receiptGroup in receiptList"
-      v-bind:key="receiptGroup.date"
-      v-bind:receiptGroup="receiptGroup" />
+  <div class="list-group">
+    <div class="list-group-item">
+      <ReceiptDayGroup
+        v-for="receiptGroup in receiptList"
+        v-bind:key="receiptGroup.date"
+        v-bind:receiptGroup="receiptGroup">
+      </ReceiptDayGroup>
+    </div>
   </div>
 </template>
 
