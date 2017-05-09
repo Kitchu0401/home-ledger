@@ -110,6 +110,7 @@ export default {
       if ( this._validate() ) {
         // pre-process
         this.receipt.amount *= (this.receipt.type === '0' ? 1 : -1)
+        this.receipt.state = 1
 
         // save
         this.$http.post('/api/receipt', this.receipt)
@@ -122,6 +123,10 @@ export default {
             this.errorMsg = '서버와 통신 중 오류가 발생했습니다.'
           })
       }
+    },
+    deleteReceipt () {
+      // TODO
+      
     },
     _validate () {
       if ( this.receipt.subType === '분류선택' ) {

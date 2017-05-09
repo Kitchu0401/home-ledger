@@ -25,6 +25,11 @@ router.get('/', function (req, res, next) {
     // getting summed total amount
     Receipt.aggregate(
       {
+        $match: {
+          state: 1
+        }
+      },
+      {
         $group: { 
           _id: null,
           sumTotalAmount: { $sum: "$amount" },
@@ -40,11 +45,30 @@ router.get('/', function (req, res, next) {
     // getting grouped receipt lists
     Receipt.aggregate(
       {
+        $match: {
+          state: 1
+        }
+      },
+      {
+        $project: {
+          year: { $year: "$date" },
+          month: { $month: "$date" },
+          day: { $dayOfMonth: "$date" },
+          date: "$date",
+          amount: "$amount",
+          receipt: "$$CURRENT"
+        }
+      },
+      {
         $group: { 
-          _id: "$date",
+          _id: {
+            year: "$year",
+            month: "$month",
+            day: "$day"
+          },
           date: { $first: "$date" },
           sumAmount: { $sum: "$amount" },
-          receipts: { $addToSet: "$$CURRENT" }
+          receipts: { $addToSet: "$receipt" }
         }
       },
       {
