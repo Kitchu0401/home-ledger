@@ -6,7 +6,8 @@ var schema = new mongoose.Schema({
   subType: String,
   date: Date,
   amount: Number,
-  memo: String
+  memo: String,
+  state: Number
 })
 
 module.exports = mongoose.model('receipt', schema)

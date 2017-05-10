@@ -9,13 +9,12 @@ router.post('/', function (req, res, next) {
   let id = req.body._id || new mongoose.mongo.ObjectId()
   let receipt = req.body
   let options = { new: true, upsert: true }
-  Receipt.findByIdAndUpdate(id, receipt, options)
-  .then(function (a,b,c) {
-    res.send(a)
-  })
-  .catch(function (err) {
-    console.error(err)
-    res.send(err)
+  Receipt
+  .findByIdAndUpdate(id, receipt, options)
+  .then((modified) => { res.send(modified) })
+  .catch((error) => {
+    console.error(error)
+    res.setStatus(500).send(error)
   })
 })
 
@@ -79,52 +78,36 @@ router.get('/', function (req, res, next) {
     )
   ])
   .then(function (result) {
-    let data = {
+    res.send({
       'sumTotalAmount': result[0][0].sumTotalAmount,
       'receiptList': result[1]
-    }
-    
-    res.send(data)
+    })
   })
-  /*
-  Receipt
-  .aggregate(
-    {
-      $group: { 
-        _id: "$date",
-        date: { $first: "$date" },
-        sumAmount: { $sum: "$amount" },
-        receipts: { $addToSet: "$$CURRENT" }
-      }
-    },
-    {
-      $sort: { 
-        date: -1
-      }
-    }
-  )
-  .exec()
-  .then(function (data) {
-    res.send(data)
+  .catch((error) => {
+    console.error(error)
+    res.setStatus(500).send(error)
   })
-  .catch(function (err) {
-    console.error(err)
-    res.send(err)
-  })
-  */
 })
 
 // GET receipt
 router.get('/:id', function (req, res, next) {
   Receipt
-  .findOne(new mongoose.Types.ObjectId(req.params.id))
-  .exec()
-  .then(function (data) {
-    res.send(data)
+  .findById(req.params.id)
+  .then((found) => { res.send(found) })
+  .catch((error) => {
+    console.error(error)
+    res.setStatus(500).send(error)
   })
-  .catch(function (err) {
-    console.error(err)
-    res.send(err)
+})
+
+// DELETE update receipt's state to 0
+router.delete('/:id', function (req, res, next) {
+  Receipt
+  .findByIdAndUpdate(req.params.id, { state: 0 }, { new: true })
+  .then((modified) => { res.send(modified) })
+  .catch((error) => {
+    console.error(error)
+    res.setStatus(500).send(error)
   })
 })
 

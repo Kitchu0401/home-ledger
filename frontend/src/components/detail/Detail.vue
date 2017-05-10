@@ -62,7 +62,14 @@
       <strong><i class="fa fa-exclamation" aria-hidden="true"></i></strong> {{ errorMsg }}
     </div>
 
-    <button class="btn btn-primary form-control" v-on:click="saveReceipt">Save receipt</button>
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+      <div v-show="id" class="btn-group" role="group">
+        <button type="button" class="btn btn-primary" v-on:click="deleteReceipt">Delete receipt</button>
+      </div>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary" v-on:click="saveReceipt">Save receipt</button>
+      </div>
+    </div>    
   </div>
 </template>
 
@@ -83,9 +90,10 @@ export default {
         .then((result) => {
           result.data.date = new Date(result.data.date)
           result.data.amount = Math.abs(result.data.amount)
+          console.debug(result)
           this.receipt = result.data
         })
-        .catch((error) => { console.error(error) })
+        .catch(this._handleError)
     }
   },
   data () {
@@ -105,6 +113,16 @@ export default {
     selectSubType (subType) {
       this.receipt.subType = subType
     },
+    deleteReceipt () {
+      if ( this.id ) {
+        // delete
+        this.$http.delete(`/api/receipt/${this.id}`)
+          .then(this._handleMoveToMain)
+          .catch(this._handleError)
+      } else {
+        this._handleError()
+      }
+    },
     saveReceipt () {
       // validate
       if ( this._validate() ) {
@@ -114,19 +132,9 @@ export default {
 
         // save
         this.$http.post('/api/receipt', this.receipt)
-          .then((result) => {
-            // forward to main list page
-            this.$router.push({ name: 'main' })
-          })
-          .catch((err) => {
-            console.error(err)
-            this.errorMsg = '서버와 통신 중 오류가 발생했습니다.'
-          })
+          .then(this._handleMoveToMain)
+          .catch(this._handleError)
       }
-    },
-    deleteReceipt () {
-      // TODO
-      
     },
     _validate () {
       if ( this.receipt.subType === '분류선택' ) {
@@ -140,7 +148,15 @@ export default {
       
       this.errorMsg = ''
       return true
-    }
+    },
+    _handleMoveToMain () {
+      // forward to main list page
+      this.$router.push({ name: 'main' })
+    },
+    _handleError (err) {
+      console.error(err)
+      this.errorMsg = '서버와 통신 중 오류가 발생했습니다.'
+    },
   }
 }
 </script>
