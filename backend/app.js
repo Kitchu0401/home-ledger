@@ -8,6 +8,7 @@ var bodyParser = require('body-parser')
 
 // routers
 var index = require('./routes/index')
+var auth = require('./routes/auth')
 var receipt = require('./routes/receipt')
 
 var app = express()
@@ -25,6 +26,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', index)
+app.use('/api/auth', auth)
 app.use('/api/receipt', receipt)
 
 // mongoose setup

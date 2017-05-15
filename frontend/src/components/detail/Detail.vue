@@ -138,8 +138,8 @@ export default {
     },
     _validate () {
       if ( this.receipt.subType === '분류선택' ) {
-        this.errorMsg = '분류를 선택해주세요.'
-        return false
+        // this.errorMsg = '분류를 선택해주세요.'
+        // return false
       }
       else if ( !$.isNumeric(this.receipt.amount) || this.receipt.amount <= 0 ) {
         this.errorMsg = '올바른 금액을 입력해주세요.'
