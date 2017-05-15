@@ -90,7 +90,6 @@ export default {
         .then((result) => {
           result.data.date = new Date(result.data.date)
           result.data.amount = Math.abs(result.data.amount)
-          console.debug(result)
           this.receipt = result.data
         })
         .catch(this._handleError)

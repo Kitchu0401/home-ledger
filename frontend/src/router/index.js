@@ -9,9 +9,6 @@ import Login from '../components/auth/Login.vue'
 Vue.use(Router)
 
 const checkAuth = (to, from, next) => {
-  console.debug('checkAuth', to, from)
-  console.debug('authService.isAuthenticated', authService.isAuthenticated)
-
   if ( authService.isAuthenticated ) {
     next()
   } else {

@@ -1,13 +1,14 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-xs-4 col-xs-offset-4">
+      <div class="col-xs-6 col-xs-offset-3">
         <form onsubmit="return false">
           <div class="form-group">
             <label for="authKey">Type authentication key!</label>
             <input type="text" class="form-control" id="authKey" v-model="authKey">
           </div>
           <button class="btn btn-primary form-control" v-on:click="login">Submit AuthKey</button>
+          <div class="alert alert-danger" role="alert" style="margin-top: 15px; text-align: center;" v-if="message">{{message}}</div>
         </form>
       </div>
     </div>
@@ -18,27 +19,26 @@
 import authService from '../../service/authService'
 
 export default {
-  components: {
-    
-  },
   data () {
     return {
-      authKey: 'testAuthKey'
+      authKey: '',
+      message: ''
     }
   },
   methods: {
     login () {
       authService.login(this.authKey)
-        .then((result) => {
-          authService.isAuthenticated = result.data.isAuthenticated
-          console.debug('authService.isAuthenticated', authService.isAuthenticated)
-          if ( authService.isAuthenticated ) {
-            console.debug('loged in!')
+        .then((isAuthenticated) => {
+          if ( isAuthenticated ) {
+            this.$router.push({ name: 'main' })
           } else {
-            console.error('login failed!')
+            this.message = '유효한 인증키가 아닙니다.'
           }
         })
-        .catch((error) => { console.error(error) })
+        .catch((error) => {
+          console.error(error)
+          this.message = '서버통신 과정에서 오류가 발생했습니다.'
+        })
     }
   }
 }
