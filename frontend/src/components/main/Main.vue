@@ -12,12 +12,14 @@
         </ul>
       </p>
     </div>
+    <ChoreNotification></ChoreNotification>
     <ReceiptListHeader v-bind:sumTotalAmount="data.sumTotalAmount"></ReceiptListHeader>
     <ReceiptList v-bind:receiptList="data.receiptList"></ReceiptList>
   </div>
 </template>
 
 <script>
+import ChoreNotification from './ChoreNotification.vue'
 import ReceiptListHeader from './ReceiptListHeader.vue'
 import ReceiptList from './ReceiptList.vue'
 
@@ -33,6 +35,7 @@ export default {
     }
   },
   components: {
+    ChoreNotification,
     ReceiptListHeader,
     ReceiptList
   }

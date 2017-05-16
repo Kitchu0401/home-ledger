@@ -19,17 +19,22 @@
 import authService from '../../service/authService'
 
 export default {
+  name: 'login',
   data () {
     return {
       authKey: '',
       message: ''
     }
   },
+  created () {
+    this.authKey = localStorage.getItem('homeledger-last-login-authkey') || ''
+  },
   methods: {
     login () {
       authService.login(this.authKey)
         .then((isAuthenticated) => {
           if ( isAuthenticated ) {
+            localStorage.setItem('homeledger-last-login-authkey', this.authKey)
             this.$router.push({ name: 'main' })
           } else {
             this.message = '유효한 인증키가 아닙니다.'
