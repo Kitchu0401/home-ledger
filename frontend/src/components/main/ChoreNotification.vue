@@ -1,8 +1,8 @@
 <template>
-  <div v-on:click="toggleShowList">
+  <div v-on:click="toggleShow">
     <div class="btn-group btn-group-justified" role="group" v-html="notificationHeaderMarkup"></div>
     <br/>
-    <table id="notificationList" class="table table-bordered" v-show="showList">
+    <table id="notificationList" class="table table-bordered" v-show="show">
       <tbody>
         <tr><th colspan="7"><strong>종량제봉투 및 재활용비닐 수거요일</strong></th></tr>
         <tr v-html="notificationListMarkup[0]"></tr>
@@ -44,14 +44,14 @@ export default {
   },
   data () {
     return {
-      showList: false,
+      show: false,
       notificationHeaderMarkup: '',
       notificationListMarkup: ['', '', '']
     }
   },
   methods: {
-    toggleShowList () {
-      this.showList = !this.showList
+    toggleShow () {
+      this.show = !this.show
     },
     generateHeaderMarkup (renewedDate) {
       let currentDay = renewedDate.getDay()

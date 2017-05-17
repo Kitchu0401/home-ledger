@@ -9,20 +9,21 @@ var debug = require('debug')('backend:server');
 var http = require('http');
 var fs = require('fs');
 
+var configFile = {}
+try {
+  const configFilePath = '../../config.json';
+  configFile = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'))['home-ledger'] || {};
+} catch(err) {
+  console.error(err, 'Failed to find configFile.');
+}
+
 /**
  * Get port from environment and store in Express.
  */
 
 // Port initialization
 // var port = normalizePort(process.env.PORT || '3000');
-var port = normalizePort(process.env.PORT || '3000');
-try {
-    const configFilePath = '../../config.json';
-    port = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'))['home-ledger'] || port;
-} catch(err) {
-    console.error(err, 'Using default port: ' + port);
-}
-
+var port = normalizePort(configFile.port || '3000');
 app.set('port', port);
 
 /**
@@ -38,6 +39,10 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+// forecast api init & run
+// var forecastService = require('./batch/dust-forecast-api')()
+require('../batch/dust-forecast-api')(configFile.serviceKey)
 
 /**
  * Normalize a port into a number, string, or false.
