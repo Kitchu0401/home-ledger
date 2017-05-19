@@ -10,6 +10,7 @@ var bodyParser = require('body-parser')
 var index = require('./routes/index')
 var auth = require('./routes/auth')
 var receipt = require('./routes/receipt')
+var dustInfo = require('./routes/dustInfo')
 
 var app = express()
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', index)
 app.use('/api/auth', auth)
 app.use('/api/receipt', receipt)
+app.use('/api/dustInfo', dustInfo)
 
 // mongoose setup
 const db = mongoose.connection

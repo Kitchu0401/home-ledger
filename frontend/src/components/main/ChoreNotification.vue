@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 const choreLabel = ['종량제봉투 및 재활용비닐', '음식물 종량제봉투', '재활용품']
 const dayLabel = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
 const days = {
@@ -38,9 +40,12 @@ export default {
       _this.notificationListMarkup = _this.generateListMarkup(renewedDate)
     }
     
-    // 컴포넌트 생성시 초기화 후 매 1분마다 갱신한다.
     refreshMarkup()
-    setInterval(refreshMarkup, 60 * 1000)
+    // 매 자정마다 갱신한다.
+    setTimeout(() => {
+      setInterval(() => {
+      }, 1000 * 60 * 60 * 24)
+    }, this.getRemainingTimeTo())
   },
   data () {
     return {
@@ -73,6 +78,11 @@ export default {
           return prev + markup
         }, '')
       })
+    },
+    // 지금부터 자정까지의 남은 시간을 milisecond 단위로 반환한다.
+    getRemainingTimeTo () {
+      var nextRequestTime = moment().add(1, 'days').startOf('day')
+      return nextRequestTime.toDate() - moment().toDate()
     }
   }
 }
