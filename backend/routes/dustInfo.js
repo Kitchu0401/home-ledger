@@ -17,4 +17,17 @@ router.get('/', function (req, res, next) {
   })
 })
 
+// GET receipt list test
+router.get('/test', function (req, res, next) {
+  DustInfo
+  .find()
+  .then((found) => {
+    res.send(found[Math.floor(Math.random() * found.length)])
+  })
+  .catch((error) => {
+    console.error(error)
+    res.setStatus(500).send(error)
+  })
+})
+
 module.exports = router

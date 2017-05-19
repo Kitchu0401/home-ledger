@@ -34,7 +34,7 @@ export default {
   created () {
     // shortcut
     let _this = this
-    let refreshMarkup = () => {
+    let refreshMarkup = function () {
       let renewedDate = new Date()
       _this.notificationHeaderMarkup = _this.generateHeaderMarkup(renewedDate)
       _this.notificationListMarkup = _this.generateListMarkup(renewedDate)
@@ -44,6 +44,7 @@ export default {
     // 매 자정마다 갱신한다.
     setTimeout(() => {
       setInterval(() => {
+        refreshMarkup()
       }, 1000 * 60 * 60 * 24)
     }, this.getRemainingTimeTo())
   },
@@ -55,10 +56,10 @@ export default {
     }
   },
   methods: {
-    toggleShow () {
+    toggleShow: function () {
       this.show = !this.show
     },
-    generateHeaderMarkup (renewedDate) {
+    generateHeaderMarkup: function (renewedDate) {
       let currentDay = renewedDate.getDay()
       // 분류의 총 숫자 만큼 순회하며 분류에 해당하는 요일인지 확인하여 마크업을 추가한다.
       // 해당하는 분류가 존재하지 않을 경우 별도의 마크업을 반환한다.
@@ -66,7 +67,7 @@ export default {
         return prev += days[key][currentDay] ? `<span class="btn btn-primary btn-lg">${label}</span>` : ''
       }, '') || '<span class="btn btn-default btn-lg">No today chores!</span>'
     },
-    generateListMarkup (renewedDate) {
+    generateListMarkup: function (renewedDate) {
       let currentDay = renewedDate.getDay()
       // 분류의 총 숫자 만큼 순회하며 해당 마크업을 반환되는 마크업으로 덮어쓴다.
       return this.notificationListMarkup.map((_, key) => {
@@ -80,7 +81,7 @@ export default {
       })
     },
     // 지금부터 자정까지의 남은 시간을 milisecond 단위로 반환한다.
-    getRemainingTimeTo () {
+    getRemainingTimeTo: function () {
       var nextRequestTime = moment().add(1, 'days').startOf('day')
       return nextRequestTime.toDate() - moment().toDate()
     }

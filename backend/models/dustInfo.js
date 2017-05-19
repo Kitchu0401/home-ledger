@@ -1,10 +1,11 @@
 var mongoose = require('mongoose')
 
 var schema = new mongoose.Schema({
-  dataTime: Date,
+  dataTime: String,
   dataList: [{
     name: String, 
-    value: Number
+    value: Number,
+    order: Number
   }]
 })
 
