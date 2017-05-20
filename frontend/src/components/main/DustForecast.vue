@@ -17,10 +17,12 @@ const labelList = ['충청북도', '충청남도', '강원도', '경상북도', 
 export default {
   name: 'dustForecast',
   created () {
+    // shortcut
+    let _this = this
     this.requestDustInfo()
     setTimeout(function () {
       setInterval(function () {
-        this.requestDustInfo()
+        _this.requestDustInfo()
       }, 1000 * 60 * 60)
     }, this.getRemainingTimeTo())
   },
@@ -36,7 +38,7 @@ export default {
       return this.dataList.filter((data) => { return data.order <= 1 }).reduce((html, data) => {
         // 미세먼지 등급에 따라 부트스트랩 버튼 색상 클래스를 결정한다.
         let className = ['info', 'success', 'warning', 'danger'][data.level]
-        return `<span class="btn btn-${className} btn-lg">${data.name} <span class="badge">${data.value}</span></span>`
+        return html + `<span class="btn btn-${className} btn-lg">${data.name} <span class="badge">${data.value}</span></span>`
       }, '')
     },
     dustInfoListMarkup: function () {
