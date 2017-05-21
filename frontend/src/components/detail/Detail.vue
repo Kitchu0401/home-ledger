@@ -150,7 +150,7 @@ export default {
     },
     _handleMoveToMain () {
       // forward to main list page
-      this.$router.push({ name: 'main' })
+      this.$router.go(-1)
     },
     _handleError (err) {
       console.error(err)

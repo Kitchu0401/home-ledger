@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!--
     <div class="jumbotron">
       <h1>메인 페이지</h1>
       <p>
@@ -12,24 +13,21 @@
         </ul>
       </p>
     </div>
+    -->
     <ChoreNotification></ChoreNotification>
     <DustForecast></DustForecast>
-    <ReceiptListHeader v-bind:sumTotalAmount="data.sumTotalAmount"></ReceiptListHeader>
-    <ReceiptList v-bind:receiptList="data.receiptList"></ReceiptList>
+    <ReceiptList></ReceiptList>
   </div>
 </template>
 
 <script>
 import ChoreNotification from './ChoreNotification.vue'
 import DustForecast from './DustForecast.vue'
-import ReceiptListHeader from './ReceiptListHeader.vue'
 import ReceiptList from './ReceiptList.vue'
 
 export default {
   created () {
-    this.$http.get('/api/receipt')
-      .then((result) => { this.data = result.data })
-      .catch((error) => { console.error(error) })
+    
   },
   data () {
     return {
@@ -39,7 +37,6 @@ export default {
   components: {
     ChoreNotification,
     DustForecast,
-    ReceiptListHeader,
     ReceiptList
   }
 }
