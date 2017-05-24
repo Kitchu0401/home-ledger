@@ -23,7 +23,7 @@
 <script>
 import ChoreNotification from './ChoreNotification.vue'
 import DustForecast from './DustForecast.vue'
-import ReceiptList from './ReceiptList.vue'
+import ReceiptList from '../receipt/ReceiptList.vue'
 
 export default {
   created () {

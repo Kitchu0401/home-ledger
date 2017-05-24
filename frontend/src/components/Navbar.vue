@@ -17,9 +17,11 @@
             <ul class="nav navbar-nav">
                 <li><router-link v-bind:to="{ name: 'chart' }">가계부 통계</router-link></li>
             </ul>
+            <!--
             <ul class="nav navbar-nav navbar-right" v-if="$route.name === 'main'">
                 <li><router-link v-bind:to="{ name: 'detail' }">새로 작성하기</router-link></li>
             </ul>
+            -->
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
