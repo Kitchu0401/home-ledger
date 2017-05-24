@@ -11,6 +11,7 @@ import App from './App'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios.create({ baseURL: '/HomeLedger' })
+Vue.prototype.$EventBus = new Vue();
 
 /* eslint-disable no-new */
 new Vue({
