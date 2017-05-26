@@ -20,14 +20,39 @@
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="sub-type">분류</label>
-                <div class="col-sm-10">
-                  <!--
-                  <SubTypeModal
-                    v-bind:type="receipt.type"
-                    v-bind:sub-type="receipt.subType"
-                    v-on:selectSubType="selectSubType">
-                  </SubTypeModal>
-                  -->
+                <div class="col-sm-10" v-if="receipt.type === '0'">
+                  <label class="radio-inline" for="분류없음">
+                    <input type="radio" id="분류없음" value="분류없음" v-model="receipt.subType" /> 분류없음
+                  </label>
+                  <label class="radio-inline" for="이자소득">
+                    <input type="radio" id="이자소득" value="이자소득" v-model="receipt.subType" /> 이자소득
+                  </label>
+                  <label class="radio-inline" for="입금">
+                    <input type="radio" id="입금" value="입금" v-model="receipt.subType" /> 입금
+                  </label>
+                  <label class="radio-inline" for="환불">
+                    <input type="radio" id="환불" value="환불" v-model="receipt.subType" /> 환불
+                  </label>
+                </div>
+                <div class="col-sm-10" v-if="receipt.type === '1'">
+                  <label class="radio-inline" for="분류없음">
+                    <input type="radio" id="분류없음" value="분류없음" v-model="receipt.subType" /> 분류없음
+                  </label>
+                  <label class="radio-inline" for="식료품">
+                    <input type="radio" id="식료품" value="식료품" v-model="receipt.subType" /> 식료품
+                  </label>
+                  <label class="radio-inline" for="생활용품">
+                    <input type="radio" id="생활용품" value="생활용품" v-model="receipt.subType" /> 생활용품
+                  </label>
+                  <label class="radio-inline" for="외식">
+                    <input type="radio" id="외식" value="외식" v-model="receipt.subType" /> 외식
+                  </label>
+                  <label class="radio-inline" for="의약품">
+                    <input type="radio" id="의약품" value="의약품" v-model="receipt.subType" /> 의약품
+                  </label>
+                  <label class="radio-inline" for="주류">
+                    <input type="radio" id="주류" value="주류" v-model="receipt.subType" /> 주류
+                  </label>
                 </div>
               </div>
               <div class="form-group">
@@ -78,10 +103,17 @@
 <script>
 import Datepicker from 'vuejs-datepicker'
 
+const TYPES = {
+  // 소득 하위 분류
+  '0': ['분류없음', '이자소득', '입금', '환불'],
+  // 지출 하위 분류
+  '1': ['분류없음', '식료품', '생활용품', '외식', '의약품', '주류']
+}
+
 const newReceipt = {
   _id: undefined,
   type: '0',
-  subType: '분류선택',
+  subType: '분류없음',
   date: new Date(),
   amount: 0,
   memo: ''
@@ -102,8 +134,18 @@ export default {
       errorMsg: ''
     }
   },
+  computed: {
+    // subTypeMarkup: function () {
+    //   let _receipt = this.receipt
+    //   return TYPES[this.receipt.type].reduce(function (html, subType) {
+    //     return html + `<label class="radio-inline" for="sub-type-${subType}">
+    //               <input type="radio" name="subType" id="sub-type-${subType}" value="${subType}" v-model="_receipt.subType"> ${subType}
+    //             </label>`
+    //   }, '')
+    // }
+  },
   methods: {
-    openModal (receipt) {
+    openModal: function (receipt) {
       if ( receipt ) {
         this.$http.get(`/api/receipt/${receipt._id}`)
           .then((result) => {
@@ -118,26 +160,28 @@ export default {
       
       $('#detailModal').modal('show')
     },
-    closeModal () {
+    closeModal: function () {
       $('#detailModal').modal('hide')
     },
-    selectSubType (subType) {
+    selectSubType: function (subType) {
       this.receipt.subType = subType
     },
-    deleteReceipt () {
+    deleteReceipt: function () {
+      let _this = this
       if ( this.receipt._id ) {
         // delete
         this.$http.delete(`/api/receipt/${this.receipt._id}`)
           .then(function () {
-            this.$EventBus.$emit('receipt.delete', this.receipt)
-            this.closeModal()
+            _this.$EventBus.$emit('receipt.delete', _this.receipt)
+            _this.closeModal()
           })
-          .catch(this._handleError)
+          .catch(_this._handleError)
       } else {
         this._handleError()
       }
     },
-    saveReceipt () {
+    saveReceipt: function () {
+      let _this = this
       // validate
       if ( this._validate() ) {
         // pre-process
@@ -147,13 +191,13 @@ export default {
         // save
         this.$http.post('/api/receipt', this.receipt)
           .then(function () {
-            this.$EventBus.$emit('receipt.save', this.receipt)
-            this.closeModal()
+            _this.$EventBus.$emit('receipt.save', _this.receipt)
+            _this.closeModal()
           })
-          .catch(this._handleError)
+          .catch(_this._handleError)
       }
     },
-    _validate () {
+    _validate: function () {
       if ( this.receipt.subType === '분류선택' ) {
         // this.errorMsg = '분류를 선택해주세요.'
         // return false
@@ -166,7 +210,7 @@ export default {
       this.errorMsg = ''
       return true
     },
-    _handleError (err) {
+    _handleError: function (err) {
       console.error(err)
       this.errorMsg = '서버와 통신 중 오류가 발생했습니다.'
     },
