@@ -10,7 +10,10 @@ router.get('/', function (req, res, next) {
   .findOne()
   .limit(1)
   .sort({ dataTime: -1 })
-  .then((found) => { res.send(found) })
+  .then((found) => {
+    found.dataList.sort((prev, next) => { return prev.order - next.order })
+    res.send(found)
+  })
   .catch((error) => {
     console.error(error)
     res.setStatus(500).send(error)

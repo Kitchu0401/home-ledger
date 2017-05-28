@@ -60,10 +60,9 @@ export default {
     requestDustInfo: function () {
       this.$http.get('/api/dustInfo')
         .then((result) => {
-          // 시도 별 미세먼지 농도 정보 선처리: filtering, ordering
+          // 시도 별 미세먼지 농도 정보 선처리: filtering
           // Table row 행 당 2건 표시를 위해 데이터가 홀수일 경우 빈 객체를 하나 삽입한다.
           result.data.dataList = result.data.dataList
-            .sort((prev, next) => { return prev.order - next.order })
             .filter((data) => { return targetList.indexOf(data.name) >= 0 })
             .map((data) => { return this.getDenseLevelInfo(data) })
           if ( result.data.dataList.length % 2 !== 0 ) { result.data.dataList.push({}) }
