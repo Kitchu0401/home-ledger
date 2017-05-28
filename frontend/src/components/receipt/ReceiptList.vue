@@ -112,5 +112,6 @@ export default {
 </script>
 
 <style>
-.form-inline .form-control { width: 100px; }
+.form-inline .form-group { display: inline-block; margin-bottom: 0px; }
+.form-inline .form-group .form-control { width: 100px; }
 </style>
