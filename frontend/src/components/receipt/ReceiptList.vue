@@ -26,6 +26,11 @@
             language="ko"
             v-model="endDate">
           </Datepicker>
+          <div class="btn-group hidden-xs" role="group">
+            <button type="button" class="btn btn-default" v-on:click="setDateRange(0)">최근 일주일</button>
+            <button type="button" class="btn btn-default" v-on:click="setDateRange(1)">최근 한달</button>
+            <button type="button" class="btn btn-default" v-on:click="setDateRange(2)">전체보기</button>
+          </div>
           <a class="btn btn-default pull-right" v-on:click="newReceipt">
             <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;새로 등록하기
           </a>
@@ -106,6 +111,23 @@ export default {
     },
     newReceipt: function () {
       this.$EventBus.$emit('receipt.view', null)
+    },
+    setDateRange: function(index) {
+      // 최근 일주일
+      if ( index === 0 ) {
+        this.startDate = moment().subtract(7, 'days').toDate()
+        this.endDate = moment().toDate()
+      }
+      // 최근 한달
+      else if ( index === 1 ) {
+        this.startDate = moment().subtract(1, 'months').toDate()
+        this.endDate = moment().toDate()
+      }
+      // 전체보기
+      else if ( index === 2 ) {
+        this.startDate = null
+        this.endDate = null
+      }
     }
   }
 }
