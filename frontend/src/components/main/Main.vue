@@ -16,7 +16,8 @@
     -->
     <ChoreNotification></ChoreNotification>
     <DustForecast></DustForecast>
-    <ReceiptList></ReceiptList>
+    <ReceiptList v-if="viewType === 'list'"></ReceiptList>
+    <ReceiptTimeline v-if="viewType === 'timeline'"></ReceiptTimeline>
   </div>
 </template>
 
@@ -24,6 +25,7 @@
 import ChoreNotification from './ChoreNotification.vue'
 import DustForecast from './DustForecast.vue'
 import ReceiptList from '../receipt/ReceiptList.vue'
+import ReceiptTimeline from '../receipt-timeline/ReceiptTimeline.vue'
 
 export default {
   created () {
@@ -31,13 +33,15 @@ export default {
   },
   data () {
     return {
-      data: {}
+      // viewType: 'list',
+      viewType: 'timeline'
     }
   },
   components: {
     ChoreNotification,
     DustForecast,
-    ReceiptList
+    ReceiptList,
+    ReceiptTimeline
   }
 }
 </script>
