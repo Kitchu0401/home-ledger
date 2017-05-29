@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-on:click="viewReceipt(receipt)">
     <div class="timeline-heading">
       <h4 class="timeline-title">
         {{ receipt.type === '0' ? '소득' : '지출' }} <small>{{ receipt.subType }}</small>

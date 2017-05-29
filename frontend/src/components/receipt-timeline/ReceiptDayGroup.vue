@@ -1,6 +1,7 @@
 <template>
   <li>
     <div class="timeline-badge primary"><i class="glyphicon glyphicon-file"></i></div>
+    <div class="timeline-label">{{ yyyy }}<br/>{{ mm }} / {{ dd }}</div>
     <div class="timeline-panel" v-if="incomeList.length > 0">
       <Receipt
         v-for="receipt in incomeList"
@@ -27,8 +28,14 @@ export default {
   },
   props: ['receiptGroup'],
   computed: {
-    dateString: function () {
-      return moment(this.receiptGroup.date).format('YYYY-MM-DD')
+    yyyy: function () {
+      return moment(this.receiptGroup.date).format('YYYY')
+    },
+    mm: function () {
+      return moment(this.receiptGroup.date).format('MM')
+    },
+    dd: function () {
+      return moment(this.receiptGroup.date).format('DD')
     },
     incomeList: function () {
       return this.receiptGroup.receipts.filter((receipt) => {

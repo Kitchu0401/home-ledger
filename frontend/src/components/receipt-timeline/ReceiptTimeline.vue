@@ -190,7 +190,7 @@ export default {
 
             .timeline > li > .timeline-panel:before {
                 position: absolute;
-                top: 26px;
+                top: 10px;
                 right: -15px;
                 display: inline-block;
                 border-top: 15px solid transparent;
@@ -202,7 +202,7 @@ export default {
 
             .timeline > li > .timeline-panel:after {
                 position: absolute;
-                top: 27px;
+                top: 11px;
                 right: -14px;
                 display: inline-block;
                 border-top: 14px solid transparent;
@@ -220,7 +220,6 @@ export default {
             font-size: 1.4em;
             text-align: center;
             position: absolute;
-            top: 16px;
             left: 50%;
             margin-left: -25px;
             background-color: #999999;
@@ -231,31 +230,25 @@ export default {
             border-bottom-left-radius: 50%;
         }
 
-        /*
-        .timeline > li.timeline-inverted > .timeline-panel {
-            float: right;
+        .timeline > li > .timeline-label {
+            color: #333;
+            width: 50px;
+            font-size: 0.7em;
+            text-align: center;
+            position: absolute;
+            top: 54px;
+            left: 50%;
+            margin-left: -25px;
+            background-color: white;
+            border: 1px solid #d4d4d4;
+            -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+            z-index: 100;
         }
-        */
 
         .timeline > li > .timeline-panel.timeline-inverted {
             float: right;
         }
-
-            /*
-            .timeline > li.timeline-inverted > .timeline-panel:before {
-                border-left-width: 0;
-                border-right-width: 15px;
-                left: -15px;
-                right: auto;
-            }
-
-            .timeline > li.timeline-inverted > .timeline-panel:after {
-                border-left-width: 0;
-                border-right-width: 14px;
-                left: -14px;
-                right: auto;
-            }
-            */
 
             .timeline > li > .timeline-panel.timeline-inverted:before {
                 border-left-width: 0;
@@ -319,7 +312,12 @@ export default {
     ul.timeline > li > .timeline-badge {
         left: 15px;
         margin-left: 0;
-        top: 16px;
+    }
+
+    ul.timeline > li > .timeline-label {
+        left: 15px;
+        margin-left: 0;
+        top: 54px;
     }
 
     ul.timeline > li > .timeline-panel {
